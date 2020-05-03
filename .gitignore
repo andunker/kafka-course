@@ -34,6 +34,7 @@ hs_err_pid*
 ######################
 ###### Intellij ######
 ######################
+.idea
 
 # Created by https://www.gitignore.io/api/intellij
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
