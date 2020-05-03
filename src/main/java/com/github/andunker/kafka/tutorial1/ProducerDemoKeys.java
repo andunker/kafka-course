@@ -17,7 +17,7 @@ public class ProducerDemoKeys {
 
     public static void main(String[] args) throws ExecutionException , InterruptedException  {
 
-        final Logger logger = LoggerFactory.getLogger(ProducerDemoWithCallback.class);
+        final Logger logger = LoggerFactory.getLogger(ProducerDemoKeys.class);
 
         String bootstrapServers = "127.0.0.1:9092";
 
