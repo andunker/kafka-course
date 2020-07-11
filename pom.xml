@@ -7,6 +7,7 @@
     <modules>
         <module>kafka-basics</module>
       <module>kafka-producer-twitter</module>
+      <module>kafka-consumer-elasticsearch</module>
     </modules>
     <name>kafka-beginners-course</name>
   <url>http://maven.apache.org</url>
