@@ -64,10 +64,9 @@ public class ElasticSearchConsumer {
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // "earliest => begining of the
-                                                                                     // topic /
-        // latest = > only new
-        // messages/ none => error"
+        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // "earliest => begining of the     // topic /// latest = > only new // messages/ none => error"
+        properties.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false"); //disable auto commit of offsets
+        properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "10");
 
         // create a consumer
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
@@ -95,6 +94,7 @@ public class ElasticSearchConsumer {
         while (true) { // is temporal (bad practice)
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100)); // new in kafka 2.0.0
 
+            logger.info("Received " + records.count() + " records");
             for (ConsumerRecord<String, String> record : records) {
 
                 // 2 strategies
@@ -117,12 +117,19 @@ public class ElasticSearchConsumer {
 
                 logger.info(indexResponse.getId());
                 try {
-                    Thread.sleep(1000); //introduce a small delay
+                    Thread.sleep(10); //introduce a small delay
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
+            logger.info("Commiting offsets...");
+            consumer.commitSync();
+            logger.info("Offsets have been comitted");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         // close the client gracefully
